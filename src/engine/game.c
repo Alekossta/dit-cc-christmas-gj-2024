@@ -6,7 +6,7 @@
 #include <time.h>
 
 // You might want to change that!
-#define FPS 60
+#define FPS 120
 #define IDEAL_MS_PER_FRAME (1000.0 / FPS)
 
 void ng_game_create(ng_game_t *game, const char *title, int width, int height)
