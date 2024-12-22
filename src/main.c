@@ -47,6 +47,13 @@ static void render()
     ng_sprite_render(&ctx.player, ctx.game.renderer);
 }
 
+static bool valid_position(ng_sprite_t player) {
+    return player.transform.x >= 0 && 
+           player.transform.y >= 0 && 
+           player.transform.x + player.transform.w <= WIDTH && 
+           player.transform.h + player.transform.y <= HEIGHT;
+}
+
 static void update(float delta)
 {
     // Handling "continuous" events, which are now repeatable
@@ -54,11 +61,35 @@ static void update(float delta)
     
     const int speed = 500;
 
-    if (keys[SDL_SCANCODE_A]) ctx.player.transform.x -= speed * delta;
-    if (keys[SDL_SCANCODE_D]) ctx.player.transform.x += speed * delta;
+    if (keys[SDL_SCANCODE_A]) {
+        ctx.player.transform.x -= speed * delta;
+        if (!valid_position(ctx.player)) {
+            // Undo movement if it is not valid
+            ctx.player.transform.x += speed * delta;
+        }
+    }
+    if (keys[SDL_SCANCODE_D]) {
+        ctx.player.transform.x += speed * delta;
+        if (!valid_position(ctx.player)) {
+            // Undo movement if it is not valid
+            ctx.player.transform.x -= speed * delta;
+        }
+    }
 
-    if (keys[SDL_SCANCODE_W]) ctx.player.transform.y -= speed * delta;
-    if (keys[SDL_SCANCODE_S]) ctx.player.transform.y += speed * delta;
+    if (keys[SDL_SCANCODE_W]) {
+        ctx.player.transform.y -= speed * delta;
+        if (!valid_position(ctx.player)) {
+            // Undo movement if it is not valid
+            ctx.player.transform.y += speed * delta;
+        }
+    }
+    if (keys[SDL_SCANCODE_S]) {
+        ctx.player.transform.y += speed * delta;
+        if (!valid_position(ctx.player)) {
+            // Undo movement if it is not valid
+            ctx.player.transform.y -= speed * delta;
+        }
+    }
 
     render();
 }
