@@ -54,6 +54,17 @@ static bool valid_position(ng_sprite_t player) {
            player.transform.h + player.transform.y <= HEIGHT;
 }
 
+// Will be updated when obstacles are added to game
+static SDL_FRect move_sprite(ng_game_t game, ng_sprite_t *player, double dx, double dy) {
+
+    player->transform.x = fmin(WIDTH - player->transform.w, player->transform.x + dx);
+    player->transform.x = fmax(0, player->transform.x);
+
+    player->transform.y = fmin(HEIGHT - player->transform.h, player->transform.y + dy);
+    player->transform.y = fmax(0, player->transform.y);
+    
+}
+
 static void update(float delta)
 {
     // Handling "continuous" events, which are now repeatable
@@ -62,33 +73,17 @@ static void update(float delta)
     const int speed = 500;
 
     if (keys[SDL_SCANCODE_A]) {
-        ctx.player.transform.x -= speed * delta;
-        if (!valid_position(ctx.player)) {
-            // Undo movement if it is not valid
-            ctx.player.transform.x += speed * delta;
-        }
+        move_sprite(ctx.game, &ctx.player, -speed * delta, 0);
     }
     if (keys[SDL_SCANCODE_D]) {
-        ctx.player.transform.x += speed * delta;
-        if (!valid_position(ctx.player)) {
-            // Undo movement if it is not valid
-            ctx.player.transform.x -= speed * delta;
-        }
+        move_sprite(ctx.game, &ctx.player, speed * delta, 0);
     }
 
     if (keys[SDL_SCANCODE_W]) {
-        ctx.player.transform.y -= speed * delta;
-        if (!valid_position(ctx.player)) {
-            // Undo movement if it is not valid
-            ctx.player.transform.y += speed * delta;
-        }
+        move_sprite(ctx.game, &ctx.player, 0, -speed*delta);
     }
     if (keys[SDL_SCANCODE_S]) {
-        ctx.player.transform.y += speed * delta;
-        if (!valid_position(ctx.player)) {
-            // Undo movement if it is not valid
-            ctx.player.transform.y -= speed * delta;
-        }
+        move_sprite(ctx.game, &ctx.player, 0, speed*delta);
     }
 
     render();
