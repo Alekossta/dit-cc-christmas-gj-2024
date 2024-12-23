@@ -1,6 +1,7 @@
 #ifndef _NG_GAME_H
 #define _NG_GAME_H
 
+#include "level.h"
 // Including this line here since it will
 // always be included by main anyways
 #ifdef __EMSCRIPTEN__
@@ -28,6 +29,8 @@ typedef struct
     int width, height;
     // Last time the frame was run
     uint32_t last_time;
+
+    level level_features;
 } ng_game_t;
 
 void ng_game_create(ng_game_t *game, const char *title, int width, int height);
