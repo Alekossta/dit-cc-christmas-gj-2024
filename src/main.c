@@ -42,6 +42,7 @@ static void handle_event(SDL_Event *event) {
 static void render() {
   SDL_RenderClear(ctx.game.renderer);
   ng_sprite_render(&ctx.player, ctx.game.renderer);
+  // Render walls
   SDL_SetRenderDrawColor(ctx.game.renderer, 255, 255, 255, 255);
   for (int i = 0; i < ctx.game.level_features.walls_counter; i++) {
     SDL_Rect rect = {
@@ -50,14 +51,20 @@ static void render() {
         (int)ctx.game.level_features.walls[i].transform.w,
         (int)ctx.game.level_features.walls[i].transform.h
     };
+    // FOR NOW, paint a rectangle until we add texture
     SDL_RenderFillRect(ctx.game.renderer, &rect);
+  }
+  // FOR NOW, paint a circle
+  SDL_SetRenderDrawColor(ctx.game.renderer, 255, 0, 0, 255);
+  for (int i = 0; i < ctx.game.level_features.platforms_counter; i++) {
+    sprite_platform p = ctx.game.level_features.platforms[i];
+    DrawCircle(ctx.game.renderer, p.platform.transform.x, p.platform.transform.y, PLATFORM_RADIUS);
   }
 
   // Update the screen after all rendering
   SDL_RenderPresent(ctx.game.renderer);
 }
 
-// Will be updated when obstacles are added to game
 static SDL_FRect move_sprite(ng_game_t game, ng_sprite_t *player, double dx,
                              double dy) {
   // Maximum x, y player can move to                              

@@ -18,6 +18,6 @@ typedef struct
 void ng_label_create(ng_label_t *label, TTF_Font *font, unsigned int wrap_length);
 
 void ng_label_set_content(ng_label_t *label, SDL_Renderer *renderer, const char *content);
-void ng_label_destroy(ng_label_t *label);
+void DrawCircle(SDL_Renderer * renderer, int32_t centreX, int32_t centreY, int32_t radius);
 
 #endif
